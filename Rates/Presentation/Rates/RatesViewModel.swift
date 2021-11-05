@@ -112,7 +112,16 @@ class DefaultRatesViewModel: RatesViewModel {
 				ratesDictionary[pair.code]
 			}
 
-			self.rates.value = sortedFreshRates
+            let updated = self.rates.value.map { rate -> CurrencyRate in
+                if let updatedRate = sortedFreshRates
+                    .first(where: {$0.pair == rate.pair}) {
+                    return updatedRate
+                } else {
+                    return rate
+                }
+            }
+
+			self.rates.value = updated
 		}
 	}
 }
